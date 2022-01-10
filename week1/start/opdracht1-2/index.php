@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,7 +11,18 @@
 
 <h2>Begroeting op basis van het moment van de dag</h2>
 <p>
+    <?php
+    $time = date("H");
 
+    if ($time >= 5  && $time < 12 ){
+        echo "goedemorgen";
+    } elseif ($time >= 12 && $time < 18) {
+        echo "goede middag";
+    } elseif ($time >= 18 && $time < 23) {
+        echo  "goede avond";
+    }
+
+    ?>
 </p>
 </body>
 </html>

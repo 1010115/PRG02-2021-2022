@@ -1,10 +1,12 @@
 <?php
-
+    require_once 'includes/music-data.php';
+    $index = $_GET['index'];
+    $album =  $musicAlbums[$index]
 ?>
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Music Collection - Details [ALBUM]</title>
+    <title>Music Collection - Details <?=$musicAlbums['album']?></title>
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -13,11 +15,12 @@
 </head>
 <body>
 <section>
-    <h1>[ALBUMNAAM]</h1>
+    <h1><?= $album['album']?></h1>
     <ul>
-        <li>Genre:</li>
-        <li>Year:</li>
-        <li>Tracks:</li>
+        <li>Artist: <?= $album['artist'] ?></li>
+        <li>Genre: <?= $album['genre'] ?></li>
+        <li>Year: <?=$album['year'] ?></li>
+        <li>Tracks:  <?=$album['tracks'] ?></li>
     </ul>
 </section>
 <div>
