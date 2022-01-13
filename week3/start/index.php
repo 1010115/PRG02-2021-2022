@@ -1,5 +1,16 @@
 <?php
+require_once "includes/database.php";
+$query = "SELECT * FROM albums";
 
+$result = mysqli_query($db, $query)
+or die('Error ' . mysqli_error($db) . ' with query ' . $query);
+
+$albums = [];
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $albums[] = $row;
+}
+mysqli_close($db);
 
 ?>
 <!doctype html>
@@ -31,17 +42,17 @@
     </tr>
     </tfoot>
     <tbody>
-    <?php foreach ( as ) { ?>
+<?php foreach ( $albums as $album ) { ?>
         <tr>
-            <td class="image"><img src="images" alt=""/></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a href="detail.php">Details</a></td>
+                <td class="image"><img src="images/<?=$album['image']?>" alt="<?=$album['name'] ?>"/></td>
+            <td> <?= $album['id'] ?> </td>
+            <td> <?= $album['artist']?></td>
+            <td><?= $album['genre']?></td>
+            <td><?= $album['year']?></td>
+            <td><?= $album['tracks']?></td>
+            <td><a href="detail.php?id=<?=$album['id']?>">Details</a></td>
         </tr>
-    <?php } ?>
+<?php } ?>
     </tbody>
 </table>
 </body>

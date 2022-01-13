@@ -55,7 +55,7 @@ mysqli_close($db);
             <td><?= $musicAlbum['year'] ?></td>
             <td><?= $musicAlbum['tracks'] ?></td>
             <td><a href="details.php?id=<?= $musicAlbum['id'] ?>">Details</a></td>
-            <td><a href="">Edit</a></td>
+            <td><a href="edit.php?id=<?=  $musicAlbum['id']?>">Edit</a></td>
             <td><a href="delete.php?id=<?= $musicAlbum['id'] ?>">Delete</a></td>
         </tr>
     <?php } ?>
