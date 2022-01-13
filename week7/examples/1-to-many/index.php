@@ -5,7 +5,9 @@
 require_once "includes/database.php";
 
 //Get the result set from the database with a SQL query
-$query = "SELECT * FROM albums";
+$query = "SELECT *, albums.name as album_name, artists.name as artist_name 
+          FROM albums
+          INNER JOIN artists ON albums.artist_id = artists.id";
 $result = mysqli_query($db, $query) or die ('Error: ' . $query );
 
 //Loop through the result to create a custom array
@@ -26,18 +28,15 @@ mysqli_close($db);
 </head>
 <body>
 <h1>Music Collection</h1>
-<a href="create.php">Create new album</a>
 <table>
     <thead>
     <tr>
-        <th></th>
-        <th>#</th>
+        <th>id</th>
         <th>Artist</th>
         <th>Album</th>
         <th>Genre</th>
         <th>Year</th>
         <th>Tracks</th>
-        <th colspan="3"></th>
     </tr>
     </thead>
     <tfoot>
@@ -49,14 +48,11 @@ mysqli_close($db);
     <?php foreach ($musicAlbums as $musicAlbum) { ?>
         <tr>
             <td><?= $musicAlbum['id'] ?></td>
-            <td><?= $musicAlbum['artist'] ?></td>
-            <td><?= $musicAlbum['name'] ?></td>
+            <td><?= $musicAlbum['artist_name'] ?></td>
+            <td><?= $musicAlbum['album_name'] ?></td>
             <td><?= $musicAlbum['genre'] ?></td>
             <td><?= $musicAlbum['year'] ?></td>
             <td><?= $musicAlbum['tracks'] ?></td>
-            <td><a href="details.php?id=<?= $musicAlbum['id'] ?>">Details</a></td>
-            <td><a href="">Edit</a></td>
-            <td><a href="delete.php?id=<?= $musicAlbum['id'] ?>">Delete</a></td>
         </tr>
     <?php } ?>
     </tbody>

@@ -5,13 +5,22 @@
 require_once "includes/database.php";
 
 //Get the result set from the database with a SQL query
-$query = "SELECT * FROM albums";
+$query = "SELECT al.id, al.name as album_name, ar.name as artist_name, g.name as genre
+          FROM albums as al
+          INNER JOIN artists ar on al.artist_id = ar.id
+          INNER JOIN album_genre ag on al.id = ag.album_id
+          INNER JOIN genres g on ag.genre_id = g.id
+          INNER JOIN users u on al.user_id = u.id";
 $result = mysqli_query($db, $query) or die ('Error: ' . $query );
 
 //Loop through the result to create a custom array
 $musicAlbums = [];
 while ($row = mysqli_fetch_assoc($result)) {
-    $musicAlbums[] = $row;
+    if(!isset($musicAlbums[$row['id']])) {
+        $musicAlbums[$row['id']] = $row;
+        unset($musicAlbums[$row['id']]['genre']);
+    }
+    $musicAlbums[$row['id']]['genres'][] = $row['genre'];
 }
 
 //Close connection
@@ -26,18 +35,13 @@ mysqli_close($db);
 </head>
 <body>
 <h1>Music Collection</h1>
-<a href="create.php">Create new album</a>
 <table>
     <thead>
     <tr>
-        <th></th>
-        <th>#</th>
+        <th>id</th>
         <th>Artist</th>
         <th>Album</th>
         <th>Genre</th>
-        <th>Year</th>
-        <th>Tracks</th>
-        <th colspan="3"></th>
     </tr>
     </thead>
     <tfoot>
@@ -49,14 +53,9 @@ mysqli_close($db);
     <?php foreach ($musicAlbums as $musicAlbum) { ?>
         <tr>
             <td><?= $musicAlbum['id'] ?></td>
-            <td><?= $musicAlbum['artist'] ?></td>
-            <td><?= $musicAlbum['name'] ?></td>
-            <td><?= $musicAlbum['genre'] ?></td>
-            <td><?= $musicAlbum['year'] ?></td>
-            <td><?= $musicAlbum['tracks'] ?></td>
-            <td><a href="details.php?id=<?= $musicAlbum['id'] ?>">Details</a></td>
-            <td><a href="">Edit</a></td>
-            <td><a href="delete.php?id=<?= $musicAlbum['id'] ?>">Delete</a></td>
+            <td><?= $musicAlbum['artist_name'] ?></td>
+            <td><?= $musicAlbum['album_name'] ?></td>
+            <td><?= implode(', ', $musicAlbum['genres']) ?></td>
         </tr>
     <?php } ?>
     </tbody>

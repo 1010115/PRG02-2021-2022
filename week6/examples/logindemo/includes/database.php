@@ -1,6 +1,6 @@
 <?php
 $host       = "localhost";
-$database   = "music_collection";
+$database   = "login_demo";
 $user       = "root";
 $password   = "";
 
